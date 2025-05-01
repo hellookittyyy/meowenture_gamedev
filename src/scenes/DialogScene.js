@@ -81,7 +81,7 @@ class DialogScene extends Phaser.Scene {
         
 
         const avatar_x = this.dialog.frame == 'assets/images/message-left.png' ?
-        this.cameras.main.width / 2 - frame.width/4 + 110 : this.cameras.main.width /2 + frame.width/4 - 110;
+        this.cameras.main.width / 2 - frame.width/4 + 110 : this.cameras.main.width /2 + frame.width/4 - 120;
 
 
         const text_x = this.dialog.frame == 'assets/images/message-left.png' ?
@@ -97,8 +97,8 @@ class DialogScene extends Phaser.Scene {
         avatar.setDepth(1);
           
         const nameText = this.add.text(
-            avatar_x - 40,
-            avatar.y + 65,
+            avatar_x - 70,
+            avatar.y + 75,
             this.dialog.character_name,
             {
                 fontSize: '24px',
