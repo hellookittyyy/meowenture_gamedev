@@ -1,8 +1,8 @@
 {
-    "characterId": 2,
-    "nextDialogId": 3,
+    "characterId": 1,
+    "nextDialogId": -1,
     "nextLevelId": null,
-    "text": "Hello! Meow.",
+    "text": "MMMEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOWWW!!!!!!!!!!!!!!",
     "isChoice": false,
     "stageNum": 1,
     "background": "assets/images/mainMenuBg.png"
