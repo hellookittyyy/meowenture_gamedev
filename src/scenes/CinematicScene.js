@@ -74,12 +74,12 @@ class CinematicScene extends Phaser.Scene {
         video.play(false, 0, 1);
 
         video.on('complete', () => {
-            this.scene.start('DialogScene', 's1_d1');
+            this.scene.start('DialogScene', 1);
         });
         
         video.on('error', (error) => {
             console.error('Video error:', error);
-            this.scene.start('DialogScene', 's1_d1');
+            this.scene.start('DialogScene', 1);
         });
     }
 }

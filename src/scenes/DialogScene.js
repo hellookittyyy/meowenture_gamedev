@@ -1,134 +1,139 @@
 import Phaser from 'phaser';
+import Dialog from '../classes/Dialog.js';
 
 class DialogScene extends Phaser.Scene {
     constructor() {
         super('DialogScene');
     }
 
-    init(data) {
-        console.log('Dialog data:', data);
-        if (data == "s1_d1"){
-            this.dialog = {
-                text: 'Welcome to the game!',
-                character_name: 'First character',
-                avatar: 'assets/images/avatar.png',
-                frame: 'assets/images/message-left.png',
-                background: 'assets/images/mainMenuBg.png',
-                next_dialog_code: 's1_d2',
-                next_scene_name: 'MainMenuScene',
-                next_scene_params: {},
-                isNextDialog: true
-            }
-        }
-
-        if (data == "s1_d2"){
-            this.dialog = {
-                text: 'Hiiiiiiii!',
-                character_name: 'Second character',
-                avatar: 'assets/images/avatar_2.png',
-                frame: 'assets/images/message-right.png',
-                background: 'assets/images/mainMenuBg.png',
-                next_dialog_code: 'none',
-                next_scene_name: 'MainMenuScene',
-                next_scene_params: {},
-                isNextDialog: false
-            }
-        }
+    init(id) {
+        this.dialogId = id;
+        this.assetsLoaded = false;
     }
 
     preload() {
-        console.log('Loading dialog:', this.dialog);
-        this.textures.remove('background');
-        this.textures.remove('frame');
-        this.textures.remove('avatar');
-        this.load.image('background', this.dialog.background);
-        this.load.image('frame', this.dialog.frame);
-        this.load.image('avatar', this.dialog.avatar);
+        this.dialog = new Dialog(this.dialogId);
+
+        this.dialog.ready.then(() => {
+            console.log('Dialog loaded:', this.dialog);
+
+            this.textures.remove('dialog-frame');
+            this.textures.remove('avatar');
+            this.textures.remove('background');
+
+            this.load.image('background', this.dialog.background);
+            this.load.image('character-frame', 'assets/images/character-frame.png');
+            this.load.image('dialog-frame', this.dialog.frame);
+            this.load.image('avatar', this.dialog.character.avatar);
+            
+            this.load.on('filecomplete', (key, type, data) => {
+            });
+
+            this.load.on('loaderror', (file) => {
+            });
+
+            this.load.once('complete', () => {
+                this.assetsLoaded = true;
+                this.events.emit('create');
+            });
+            
+            this.load.start();
+        });
     }
 
     create() {
+        if (!this.dialog.ready || !this.assetsLoaded) {
+            this.events.once('create', this.create, this);
+            return;
+        }
+
         const background = this.add.image(
             this.cameras.main.width / 2,
             this.cameras.main.height / 2,
             'background'
         );
-        
-        const scale = Math.max(
-            this.cameras.main.width / background.width,
-            this.cameras.main.height / background.height
-        );
-        
-        background.setScale(scale);
-        
-        const bgWidth = background.width * scale;
-        const bgHeight = background.height * scale;
-        
-        if (bgWidth < this.cameras.main.width) {
+
+        if (background.width > this.cameras.main.width) {
             background.setScale(this.cameras.main.width / background.width);
-        } else if (bgHeight < this.cameras.main.height) {
+        } else if (background.height > this.cameras.main.height) {
             background.setScale(this.cameras.main.height / background.height);
         }
 
-        const frame_x = this.cameras.main.width / 2;
+        const isLeftSide = this.dialog.frame.includes('left');
+        const frameY = this.cameras.main.height - 140;
 
-        const frame = this.add.image(
-            frame_x,
-            this.cameras.main.height - 140,
-            'frame'
+        const characterFrame = this.add.image(
+            isLeftSide ? this.cameras.main.width / 2 - 250 : this.cameras.main.width / 2 + 250,
+            frameY,
+            'character-frame'
         ).setScale(0.5);
+        characterFrame.setDepth(1);
 
-        frame.setDepth(2);
+        const dialogFrame = this.add.image(
+            isLeftSide ? characterFrame.x + 500 / 2 + 100 : characterFrame.x - 500 / 2 - 100,
+            frameY,
+            'dialog-frame'
+        ).setScale(0.5);
+        dialogFrame.setDepth(2);
+
+        const textX = dialogFrame.x - dialogFrame.displayWidth / 2 + 20;
+        const textY = dialogFrame.y + dialogFrame.displayHeight / 4 + 10;
+        const nameX = characterFrame.x;
+        const nameY = characterFrame.y;
         
 
-        const avatar_x = this.dialog.frame == 'assets/images/message-left.png' ?
-        this.cameras.main.width / 2 - frame.width/4 + 110 : this.cameras.main.width /2 + frame.width/4 - 120;
-
-
-        const text_x = this.dialog.frame == 'assets/images/message-left.png' ?
-        frame_x - 100 : frame_x - frame_x /2;
-
- 
-        const avatar = this.add.image(
-            avatar_x+5,
-            frame.y-10, 
-            'avatar'
-        ).setScale(0.45);
-        
-        avatar.setDepth(1);
-          
         const nameText = this.add.text(
-            avatar_x - 70,
-            avatar.y + 75,
-            this.dialog.character_name,
+            nameX,
+            nameY + 60,
+            this.dialog.character.name,
             {
-                fontSize: '24px',
+                fontSize: '18px',
                 color: '#ffffff',
-                fontFamily: 'Arial'
+                fontFamily: 'Arial',
+                fontWeight: 'bold'
             }
         );
+        nameText.setX(nameText.x - nameText.displayWidth / 2);
 
         nameText.setDepth(3);
 
-        const text = this.add.text(
-            text_x,
-            frame.y + 50,
+        const dialogText = this.add.text(
+            textX,
+            textY,
             this.dialog.text,
             {
-                fontSize: '20px',
+                fontSize: '22px',
                 color: '#ffffff',
                 fontFamily: 'Arial',
-                wordWrap: { width: 400 },
-                align: 'left'
+                wordWrap: { width: dialogFrame.displayWidth * 0.6 },
+                align: 'left',
+                lineSpacing: 8
             }
         );
+        dialogText.setDepth(3);
 
-        text.setDepth(3);
+        // Avatar image
+        const avatar = this.add.image(
+            characterFrame.x,
+            characterFrame.y - 12,
+            'avatar'
+        );
+        avatar.setScale(0.5);
+        avatar.setDepth(3);
+
+        if (!isLeftSide){
+            avatar.flipX = true;
+
+        }
 
         this.input.on('pointerdown', () => {
-            if (this.dialog.isNextDialog) {
-                this.scene.start('DialogScene', this.dialog.next_dialog_code);
-            } else {
-                this.scene.start(this.dialog.next_scene_name, this.dialog.next_scene_params);
+            if (this.dialog.nextDialogId == -1){
+                this.scene.start('MainMenuScene');
+            }
+            else if (this.dialog.nextDialogId) {
+                this.scene.start('DialogScene', this.dialog.nextDialogId);
+            } else if (this.dialog.nextLevelId) {
+                this.scene.start('LevelScene', { levelId: this.dialog.nextLevelId });
             }
         });
     }
