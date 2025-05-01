@@ -71,7 +71,7 @@ class CinematicScene extends Phaser.Scene {
         video.setVisible(true);
 
         // Play the video
-        video.play();
+        video.play(false, 0, 1);
 
         video.on('complete', () => {
             this.scene.start('DialogScene', 's1_d1');
