@@ -8,16 +8,16 @@ import DialogScene from './scenes/DialogScene';
 
 const config = {
     type: Phaser.CANVAS,
-    width: 1280,
-    height: 720,
+    width: 1600,
+    height: 900,
     parent: 'game',
     backgroundColor: '#000000',
     scene: [MainMenuScene, SettingsScene, KeyboardTipsScene, SkinsScene, CinematicScene, DialogScene],
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 1280,
-        height: 720,
+        width: 1600,
+        height: 900,
         min: {
             width: 800,
             height: 450
@@ -36,6 +36,7 @@ const config = {
     antialiasGL: true
 };
 
+
 document.fonts.ready.then(() => {
     const karantinaFont = new FontFace('Karantina', 'url(https://fonts.gstatic.com/s/karantina/v13/buExpo24ccnh31GVMABxXCgf-P5Oaiw.woff2)', {
         weight: '700'
@@ -45,8 +46,11 @@ document.fonts.ready.then(() => {
         document.fonts.add(font);
         console.log('Karantina font loaded successfully');
         const game = new Phaser.Game(config);
+
+        console.log(game.scale);
     }).catch(error => {
         console.error('Font loading failed:', error);
         const game = new Phaser.Game(config);
+
     });
 });
