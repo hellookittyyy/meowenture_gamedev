@@ -25,12 +25,6 @@ class DialogScene extends Phaser.Scene {
             this.load.image('character-frame', 'assets/images/character-frame.png');
             this.load.image('dialog-frame', this.dialog.frame);
             this.load.image('avatar', this.dialog.character.avatar);
-            
-            this.load.on('filecomplete', (key, type, data) => {
-            });
-
-            this.load.on('loaderror', (file) => {
-            });
 
             this.load.once('complete', () => {
                 this.assetsLoaded = true;
@@ -70,7 +64,7 @@ class DialogScene extends Phaser.Scene {
         characterFrame.setDepth(1);
 
         const dialogFrame = this.add.image(
-            isLeftSide ? characterFrame.x + 500 / 2 + 100 : characterFrame.x - 500 / 2 - 100,
+            isLeftSide ? characterFrame.x + 700 / 2  : characterFrame.x - 700 / 2,
             frameY,
             'dialog-frame'
         ).setScale(0.5);
@@ -123,7 +117,6 @@ class DialogScene extends Phaser.Scene {
 
         if (!isLeftSide){
             avatar.flipX = true;
-
         }
 
         this.input.on('pointerdown', () => {
