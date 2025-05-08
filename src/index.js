@@ -45,20 +45,26 @@ const config = {
 };
 
 
-document.fonts.ready.then(() => {
-    const karantinaFont = new FontFace('Karantina', 'url(https://fonts.gstatic.com/s/karantina/v13/buExpo24ccnh31GVMABxXCgf-P5Oaiw.woff2)', {
-        weight: '700'
-    });
-    
-    karantinaFont.load().then(font => {
-        document.fonts.add(font);
-        console.log('Karantina font loaded successfully');
-        const game = new Phaser.Game(config);
+const fontLoader = new Promise((resolve) => {
+    const testText = document.createElement('span');
+    testText.style.fontFamily = 'Karantina';
+    testText.style.position = 'absolute';
+    testText.style.visibility = 'hidden';
+    testText.textContent = 'Test Font Loading';
+    document.body.appendChild(testText);
 
-        console.log(game.scale);
-    }).catch(error => {
-        console.error('Font loading failed:', error);
-        const game = new Phaser.Game(config);
+    const checkFont = () => {
+        if (document.fonts.check('700 10px Karantina')) {
+            document.body.removeChild(testText);
+            resolve();
+        } else {
+            setTimeout(checkFont, 100);
+        }
+    };
 
-    });
+    checkFont();
+});
+
+fontLoader.then(() => {
+    const game = new Phaser.Game(config);
 });

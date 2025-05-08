@@ -12,8 +12,6 @@ class LevelScene extends Phaser.Scene {
         this.load.image('down', 'assets/images/platforms/down.png');
     }
 
-    
-
     create() {
         this.physics.world.setBounds(0, 0, 3200, 900);
         this.cameras.main.setBounds(0, 0, 3200, 900);
@@ -113,11 +111,6 @@ class LevelScene extends Phaser.Scene {
             this.player.play('falling', true);
         }
         
-        // Debug
-        if(this.cursors.space.isDown) {
-           console.log(this.player.getBottomLeft());
-        }
-
         if (this.player.getBottomLeft().y === 900) {            
             this.player.setPosition(500, 600);
         }
