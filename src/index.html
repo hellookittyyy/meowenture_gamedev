@@ -12,42 +12,29 @@
 
         body {
             margin: 0;
-            padding: 0;
-            /* background-color: #ff00b7; */
             background-color: #5aa2c6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100%;
             height: 100vh;
+            overflow: hidden;
             font-family: 'Karantina', cursive;
             font-weight: 700;
+        }
+        #game {
+            width: 100%;
+            height: 100%;
         }
         canvas {
             display: block;
-            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-
-        body a{
-            z-index: 1;
-            text-decoration: none;
-            color: #ffb4e8;
-            background-color: #fe00b2;
-            padding: 0 10px 0 10px;
-            font-size: 50px;
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            font-family: 'Karantina', cursive;
-            font-weight: 700;
-        }
-
         body div{
             z-index: 2;
         }
     </style>
 </head>
 <body>
-    <a href="http://localhost:5500/index.html">Exit</a>
     <div id="game"></div>
 </body>
 </html>
