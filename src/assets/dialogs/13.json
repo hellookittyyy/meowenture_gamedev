@@ -1,0 +1,9 @@
+{
+    "characterId": 1,
+    "nextDialogId": 14,
+    "nextLevelId": null,
+    "text": "Тоді я не зупинюся, доки не знайду його. Я пройду будь-який шлях, будь-який тунель.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

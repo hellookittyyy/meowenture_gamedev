@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 16,
+    "nextLevelId": null,
+    "text": "У тебе є серце воїна, Смугастику. Але пам’ятай – ці дороги перевіряють не лише спритність, а й душу.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

@@ -1,0 +1,9 @@
+{
+    "characterId": 1,
+    "nextDialogId": 18,
+    "nextLevelId": null,
+    "text": "Я виберу. Але перш ніж піду…",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

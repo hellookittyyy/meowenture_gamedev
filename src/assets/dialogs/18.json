@@ -1,0 +1,9 @@
+{
+    "characterId": 1,
+    "nextDialogId": 19,
+    "nextLevelId": null,
+    "text": "Якщо знайду її… Руну… я приведу її назад.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

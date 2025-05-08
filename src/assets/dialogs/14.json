@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 15,
+    "nextLevelId": null,
+    "text": "Оце я розумію.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

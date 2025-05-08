@@ -1,0 +1,9 @@
+{
+    "characterId": 1,
+    "nextDialogId": 8,
+    "nextLevelId": null,
+    "text": "Що з нею сталося?..",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

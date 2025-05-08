@@ -1,0 +1,9 @@
+{
+    "characterId": 1,
+    "nextDialogId": 12,
+    "nextLevelId": null,
+    "text": " Думаєте, це… Іна забрала і Хвостика?",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

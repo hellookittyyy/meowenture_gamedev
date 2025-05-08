@@ -71,7 +71,7 @@ class DialogScene extends Phaser.Scene {
         dialogFrame.setDepth(2);
 
         const textX = dialogFrame.x - dialogFrame.displayWidth / 2 + 20;
-        const textY = dialogFrame.y + dialogFrame.displayHeight / 4 + 10;
+        const textY = dialogFrame.y + 20;
         const nameX = characterFrame.x;
         const nameY = characterFrame.y;
         
@@ -81,7 +81,7 @@ class DialogScene extends Phaser.Scene {
             nameY + 60,
             this.dialog.character.name,
             {
-                fontSize: '18px',
+                fontSize: '16px',
                 color: '#ffffff',
                 fontFamily: 'Arial',
                 fontWeight: 'bold'
@@ -96,12 +96,12 @@ class DialogScene extends Phaser.Scene {
             textY,
             this.dialog.text,
             {
-                fontSize: '22px',
+                fontSize: '18px',
                 color: '#ffffff',
                 fontFamily: 'Arial',
-                wordWrap: { width: dialogFrame.displayWidth * 0.6 },
+                wordWrap: { width: dialogFrame.displayWidth * 0.95 },
                 align: 'left',
-                lineSpacing: 8
+                lineSpacing: 4
             }
         );
         dialogText.setDepth(3);

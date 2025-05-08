@@ -2,7 +2,7 @@
     "characterId": 2,
     "nextDialogId": 3,
     "nextLevelId": null,
-    "text": "Hello! Meow.",
+    "text": "Цей ліс бере лише тих, хто здається. А ти – не з таких, малий. Видно по очах.",
     "isChoice": false,
     "stageNum": 1,
     "background": "assets/images/mainMenuBg.png"

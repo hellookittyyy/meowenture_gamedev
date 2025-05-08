@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 11,
+    "nextLevelId": null,
+    "text": " Я рив ці тунелі, бо зрозумів: хтось або щось ховається під землею. Старі легенди розповідають про Іну – тінь, що краде тих, кого люблять найбільше.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

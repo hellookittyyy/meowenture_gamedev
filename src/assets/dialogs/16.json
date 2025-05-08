@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 17,
+    "nextLevelId": null,
+    "text": "Один шлях веде до правди, інший – до ілюзії, третій – до загибелі. Але вибір твій. І навіть помилка може привести до істини, якщо віриш у себе.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

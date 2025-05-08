@@ -2,7 +2,7 @@
     "characterId": 1,
     "nextDialogId": 2,
     "nextLevelId": null,
-    "text": "Hello, world!",
+    "text": "Дякую, що врятували мене… Я думав, що більше не прокинуся.",
     "isChoice": false,
     "stageNum": 1,
     "background": "assets/images/mainMenuBg.png"

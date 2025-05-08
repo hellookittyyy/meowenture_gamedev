@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 7,
+    "nextLevelId": null,
+    "text": "Її звали Руна. Моя донька. Маленьке біле кошеня з очима кольору неба після грози. Ми жили в селищі десь на заході лісу, серед дерев і пісень птахів.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

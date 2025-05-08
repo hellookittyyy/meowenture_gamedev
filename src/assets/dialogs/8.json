@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 9,
+    "nextLevelId": null,
+    "text": "Одного дня вона пішла гратися в хащі... і не повернулася. Я чув її крик. Та поки дістався, залишився лише мішок із пір’ям.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

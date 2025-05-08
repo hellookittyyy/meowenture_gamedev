@@ -1,8 +1,8 @@
 {
     "characterId": 1,
-    "nextDialogId": -1,
+    "nextDialogId": 4,
     "nextLevelId": null,
-    "text": "MMMEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOWWW!!!!!!!!!!!!!!",
+    "text": "Мого друга викрали. Просто з нашого дому. Я побачив тінь, почув його крик… і кинувся навздогін. Але… загубився.",
     "isChoice": false,
     "stageNum": 1,
     "background": "assets/images/mainMenuBg.png"

@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 10,
+    "nextLevelId": null,
+    "text": "Я біг, шукав, питав. Ніхто нічого не знав. Лише одне створіння бачило, як у темряві хтось ніс мішок із чимось, що рухалося.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 6,
+    "nextLevelId": null,
+    "text": "Багато років тому я також гнався за тінню…",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

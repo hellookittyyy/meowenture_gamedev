@@ -1,0 +1,9 @@
+{
+    "characterId": 1,
+    "nextDialogId": 5,
+    "nextLevelId": null,
+    "text": "Тепер я не знаю, куди йти далі.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

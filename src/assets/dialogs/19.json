@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": null,
+    "nextLevelId": 1,
+    "text": "Дякую тобі, малий. Більше, ніж ти можеш уявити…",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}

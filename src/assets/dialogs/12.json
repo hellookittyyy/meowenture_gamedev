@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 13,
+    "nextLevelId": null,
+    "text": "Можливо. А можливо – хтось, хто служить їй. Вона не забирає просто так. Її приваблює… зв’язок. Любов. Дружба. Найцінніше.",
+    "isChoice": false,
+    "stageNum": 1,
+    "background": "assets/images/mainMenuBg.png"
+}
