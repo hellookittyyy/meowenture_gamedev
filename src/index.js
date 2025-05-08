@@ -5,14 +5,22 @@ import KeyboardTipsScene from './scenes/KeyboardTipsScene';
 import SkinsScene from './scenes/SkinsScene';
 import CinematicScene from './scenes/CinematicScene';
 import DialogScene from './scenes/DialogScene';
+import LevelScene from './scenes/LevelScene';
 
 const config = {
     type: Phaser.CANVAS,
     width: 1600,
     height: 900,
     parent: 'game',
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 500 },
+            debug: true
+        }
+    },
     backgroundColor: '#000000',
-    scene: [MainMenuScene, SettingsScene, KeyboardTipsScene, SkinsScene, CinematicScene, DialogScene],
+    scene: [MainMenuScene, SettingsScene, KeyboardTipsScene, SkinsScene, CinematicScene, DialogScene, LevelScene],
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
