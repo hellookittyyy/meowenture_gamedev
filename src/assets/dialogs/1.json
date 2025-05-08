@@ -1,7 +1,7 @@
 {
     "characterId": 1,
-    "nextDialogId": 2,
-    "nextLevelId": null,
+    "nextDialogId": null,
+    "nextLevelId": 1,
     "text": "Дякую, що врятували мене… Я думав, що більше не прокинуся.",
     "isChoice": false,
     "stageNum": 1,

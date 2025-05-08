@@ -6,7 +6,7 @@ class LevelScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', 'assets/images/mainMenuBg_extended.png');
+        this.load.image('level_background', 'assets/images/mainMenuBg_extended.png');
         this.load.spritesheet('character', 'assets/images/character/moving.png', { frameWidth: 200, frameHeight: 200 });
         this.load.image('ground', 'assets/images/platforms/1.png');
         this.load.image('down', 'assets/images/platforms/down.png');
@@ -15,7 +15,7 @@ class LevelScene extends Phaser.Scene {
     create() {
         this.physics.world.setBounds(0, 0, 3200, 900);
         this.cameras.main.setBounds(0, 0, 3200, 900);
-        this.add.image(1600, 450, 'background').setScale(0.5);
+        this.add.image(1600, 450, 'level_background').setScale(0.5);
 
         const bottom = this.physics.add.staticGroup();
 

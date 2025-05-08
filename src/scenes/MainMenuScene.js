@@ -34,6 +34,10 @@ class MainMenuScene extends Phaser.Scene {
     }
 
     preload() {
+        console.log('Loaded assets:', 
+            this.textures ? this.textures.list : 'textures not available',
+            this.cache.audio ? this.cache.audio.entries : 'audio not available'
+        );
         this.load.image('mainMenuBg', 'assets/images/mainMenuBg.png');
         this.load.audio('bgMusic', 'assets/audio/Elysium.mp3');
     }
@@ -150,7 +154,7 @@ class MainMenuScene extends Phaser.Scene {
  
                 switch(text) {
                     case this.translations[this.language].newGame:
-                        // this.scene.start('LevelScene');
+                        //this.scene.start('LevelScene');
                         this.scene.start('CinematicScene', { path: 'assets/videos/scene1.mp4', next_scene: 'MainMenuScene' });   
                         break;
                     case this.translations[this.language].continue:
@@ -165,7 +169,6 @@ class MainMenuScene extends Phaser.Scene {
             });
         });
         
-        // Initialize music if it doesn't exist
         if (!this.sound.get('bgMusic')) {
             this.bgMusic = this.sound.add('bgMusic');
             this.bgMusic.play({
@@ -173,11 +176,9 @@ class MainMenuScene extends Phaser.Scene {
                 volume: 1.0
             });
         } else {
-            // Get existing music instance
             this.bgMusic = this.sound.get('bgMusic');
         }
 
-        // Store reference in the game's sound manager
         this.sound.bgMusic = this.bgMusic;
     }
 }

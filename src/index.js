@@ -6,6 +6,7 @@ import SkinsScene from './scenes/SkinsScene';
 import CinematicScene from './scenes/CinematicScene';
 import DialogScene from './scenes/DialogScene';
 import LevelScene from './scenes/LevelScene';
+import LoadingScene from './scenes/LoadingScene';
 
 const config = {
     type: Phaser.CANVAS,
@@ -20,7 +21,7 @@ const config = {
         }
     },
     backgroundColor: '#000000',
-    scene: [MainMenuScene, SettingsScene, KeyboardTipsScene, SkinsScene, CinematicScene, DialogScene, LevelScene],
+    scene: [LoadingScene, MainMenuScene, SettingsScene, KeyboardTipsScene, SkinsScene, CinematicScene, DialogScene, LevelScene],
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
