@@ -71,7 +71,7 @@ class DialogScene extends Phaser.Scene {
             {
                 fontSize: '16px',
                 color: '#ffffff',
-                fontFamily: 'Arial',
+                fontFamily: 'Glasstown',
                 fontWeight: 'bold'
             }
         );
@@ -86,7 +86,7 @@ class DialogScene extends Phaser.Scene {
             {
                 fontSize: '18px',
                 color: '#ffffff',
-                fontFamily: 'Arial',
+                fontFamily: 'Glasstown',
                 wordWrap: { width: dialogFrame.displayWidth * 0.95 },
                 align: 'left',
                 lineSpacing: 4
