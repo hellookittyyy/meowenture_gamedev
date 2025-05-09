@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": -1,
+    "nextLevelId": null,
+    "text": "Далі буде більше пригод...",
+    "isChoice": false,
+    "stageNum": 2,
+    "background": "assets/images/mainMenuBg.png"
+}

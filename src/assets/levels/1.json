@@ -1,0 +1,13 @@
+{
+    "nextDialogId": 20,
+    "levelNum": 1,
+    "background": "level_background",
+    "start": {
+        "x": 200,
+        "y": 720
+    },
+    "finish": {
+        "x": 1700,
+        "y": 370
+    }
+}

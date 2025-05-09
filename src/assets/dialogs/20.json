@@ -1,0 +1,9 @@
+{
+    "characterId": 2,
+    "nextDialogId": 21,
+    "nextLevelId": null,
+    "text": "Вітаю з завершенням першого етапу! Зібрано монет: {coinCount}. Смугастик, продовжує свою подорож і історія скоро продовжиться теж.",
+    "isChoice": false,
+    "stageNum": 2,
+    "background": "assets/images/mainMenuBg.png"
+}

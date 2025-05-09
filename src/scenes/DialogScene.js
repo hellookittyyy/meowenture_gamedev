@@ -15,17 +15,6 @@ class DialogScene extends Phaser.Scene {
         this.dialog = new Dialog(this.dialogId);
 
         this.dialog.ready.then(() => {
-            console.log('Dialog loaded:', this.dialog);
-
-            this.textures.remove('dialog-frame');
-            this.textures.remove('avatar');
-            this.textures.remove('background');
-
-            this.load.image('background', this.dialog.background);
-            this.load.image('character-frame', 'assets/images/character-frame.png');
-            this.load.image('dialog-frame', this.dialog.frame);
-            this.load.image('avatar', this.dialog.character.avatar);
-
             this.load.once('complete', () => {
                 this.assetsLoaded = true;
                 this.events.emit('create');
@@ -53,7 +42,7 @@ class DialogScene extends Phaser.Scene {
             background.setScale(this.cameras.main.height / background.height);
         }
 
-        const isLeftSide = this.dialog.frame.includes('left');
+        const isLeftSide = this.dialog.isLeftSide;
         const frameY = this.cameras.main.height - 140;
 
         const characterFrame = this.add.image(
@@ -66,7 +55,7 @@ class DialogScene extends Phaser.Scene {
         const dialogFrame = this.add.image(
             isLeftSide ? characterFrame.x + 700 / 2  : characterFrame.x - 700 / 2,
             frameY,
-            'dialog-frame'
+            isLeftSide ? 'left-dialog-frame' : 'right-dialog-frame'
         ).setScale(0.5);
         dialogFrame.setDepth(2);
 
@@ -74,7 +63,6 @@ class DialogScene extends Phaser.Scene {
         const textY = dialogFrame.y + 20;
         const nameX = characterFrame.x;
         const nameY = characterFrame.y;
-        
 
         const nameText = this.add.text(
             nameX,
@@ -94,7 +82,7 @@ class DialogScene extends Phaser.Scene {
         const dialogText = this.add.text(
             textX,
             textY,
-            this.dialog.text,
+            this.insertVariables(this.dialog.text),
             {
                 fontSize: '18px',
                 color: '#ffffff',
@@ -106,11 +94,10 @@ class DialogScene extends Phaser.Scene {
         );
         dialogText.setDepth(3);
 
-        // Avatar image
         const avatar = this.add.image(
             characterFrame.x,
             characterFrame.y - 12,
-            'avatar'
+            this.dialog.character.avatar
         );
         avatar.setScale(0.5);
         avatar.setDepth(3);
@@ -129,6 +116,13 @@ class DialogScene extends Phaser.Scene {
                 this.scene.start('LevelScene', { levelId: this.dialog.nextLevelId });
             }
         });
+    }
+
+    insertVariables(text) {
+        const coinCount = this.registry.get('coin_count');
+        const deathCount = this.registry.get('death_count');
+        console.log("СС",coinCount, deathCount);
+        return text.replace('{coinCount}', coinCount).replace('{deathCount}', deathCount);
     }
 }
 

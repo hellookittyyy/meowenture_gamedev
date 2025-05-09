@@ -5,8 +5,7 @@ class Block {
         this.coords = blockInfo.coords;
         this.size = blockInfo.size;
         this.image = blockInfo.image;
-        this.isStart = blockInfo.isStart;
-        this.isFinish = blockInfo.isFinish;
+        this.move = blockInfo.move;
     }
     
     loadBlockInfo(id) {

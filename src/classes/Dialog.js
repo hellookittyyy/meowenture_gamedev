@@ -10,7 +10,7 @@ class Dialog {
         this.isChoice = false;
         this.stageNum = 0;
         this.background = '';
-        this.frame = '';
+        this.isLeftSide = false;
         this.ready = this.initialize(id).then(() => this);
     }
 
@@ -23,13 +23,12 @@ class Dialog {
             this.isChoice = dialogInfo.isChoice;
             this.stageNum = dialogInfo.stageNum;
             this.background = dialogInfo.background;
-            this.frame = dialogInfo.characterId == 1 ? 'assets/images/dialog-left-frame.png' : 'assets/images/dialog-right-frame.png';
+            this.isLeftSide = dialogInfo.characterId == 1;
             return this.character.ready.then(() => this);
         });
     }
 
     loadDialogInfo(id) {
-        console.log('Loading dialog info:', id);
         return fetch(`../assets/dialogs/${id}.json`).then(response => response.json());
     }
 }

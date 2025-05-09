@@ -6,16 +6,12 @@ class LoadingScene extends Phaser.Scene {
         this.loadingText = null;
         this.progressBar = null;
         this.progressBox = null;
-        this.loadingCat = null;
     }
 
     preload() {
         const width = this.cameras.main.width;
         const height = this.cameras.main.height;
-        this.load.spritesheet('loading-cat', 'assets/images/character/moving.png', { 
-            frameWidth: 200, 
-            frameHeight: 200 
-        }); 
+
         this.progressBox = this.add.graphics();
         this.progressBox.fillStyle(0x222222, 0.8);
         this.progressBox.fillRoundedRect(width / 2 - 160, height / 2 + 50, 320, 50, 10);
@@ -24,35 +20,42 @@ class LoadingScene extends Phaser.Scene {
 
         this.loadingText = this.add.text(width / 2, height / 2 - 50, 'Loading...', {
             fontSize: '32px',
-            color: '#ffffff'
+            color: '#ffffff',
+            fontFamily: 'Karantina',
+            fontWeight: '700',
+            resolution: 2,
+            letterSpacing: 2
         }).setOrigin(0.5);
 
-        
-        this.load.image('mainMenuBg', 'assets/images/mainMenuBg.png');
-        this.load.image('mainMenuBg_extended', 'assets/images/mainMenuBg_extended.png');
-        this.load.image('ground', 'assets/images/platforms/1.png');
-        this.load.image('down', 'assets/images/platforms/down.png');
+        const platformsAssets = ['platform1', 'platform2', 'platform3', 'platform4', 'platform5', 'platform6', 'platform7', 'spike'];
+
+        platformsAssets.forEach(platform => {
+            this.load.image(platform, `assets/images/platforms/${platform}.png`);
+        });
+
+        const interfaceAssets = ['coin', 'heart', 'heart-empty', 'start', 'finish'];
+
+        interfaceAssets.forEach(asset => {
+            this.load.image(asset, `assets/images/interface/${asset}.png`);
+        });
+
         this.load.audio('bgMusic', 'assets/audio/Elysium.mp3');
+
+        this.load.image('level_background', 'assets/images/mainMenuBg_extended.png');
+        this.load.image('mainMenuBg', 'assets/images/mainMenuBg.png');
+        this.load.image('background', 'assets/images/mainMenuBg.png');
+
+        this.load.image('character-frame', 'assets/images/dialogs/character-frame.png');
+        this.load.image('left-dialog-frame', 'assets/images/dialogs/dialog-left-frame.png');
+        this.load.image('right-dialog-frame', 'assets/images/dialogs/dialog-right-frame.png');
+
+        this.load.spritesheet('character', 'assets/images/character/moving_sprite.png', { frameWidth: 200, frameHeight: 200 });
+        this.load.image('cat-1', 'assets/images/character/skin.png');
+        this.load.image('cat-2', 'assets/images/character/skin2.png');
 
         this.load.on('progress', this.updateProgress, this);
         this.load.on('complete', this.loadComplete, this);
     }
-
-    create() {
-        this.loadingCat = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2 - 100, 'loading-cat');
-        this.loadingCat.setScale(0.5);
-
-        this.anims.create({
-            key: 'loading-move',
-            frames: this.anims.generateFrameNumbers('loading-cat', { start: 0, end: 7 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.loadingCat.play('loading-move');
-    }
-
-
 
     updateProgress(value) {
         const width = this.cameras.main.width;

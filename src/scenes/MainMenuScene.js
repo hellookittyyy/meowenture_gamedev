@@ -154,7 +154,6 @@ class MainMenuScene extends Phaser.Scene {
  
                 switch(text) {
                     case this.translations[this.language].newGame:
-                        //this.scene.start('LevelScene');
                         this.scene.start('CinematicScene', { path: 'assets/videos/scene1.mp4', next_scene: 'MainMenuScene' });   
                         break;
                     case this.translations[this.language].continue:
