@@ -224,10 +224,10 @@ class SkinsScene extends Phaser.Scene {
         container8.lineStyle(2, 0xFFFFFF, 1);
         container8.strokeRoundedRect(containerCoords8.x, containerCoords8.y, containerWidth, containerHeight, 15);
 
-        const skin1 = this.add.image(skinCoords.x, skinCoords.y , 'skin1');
+        const skin1 = this.add.image(skinCoords.x, skinCoords.y , 'cat-1');
         skin1.setDisplaySize(containerWidth-20, containerHeight-20);
 
-        const skin2 = this.add.image(skinCoords2.x, skinCoords2.y , 'skin2');
+        const skin2 = this.add.image(skinCoords2.x, skinCoords2.y , 'cat-2');
         skin2.setDisplaySize(containerWidth-20, containerHeight-20);
 
         const skin3 = this.add.image(skinCoords3.x, skinCoords3.y , 'skin3');

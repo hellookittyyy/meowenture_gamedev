@@ -12,14 +12,12 @@ class CinematicScene extends Phaser.Scene {
     }
 
     preload() {
-        console.log('Loading video:', this.path);
-        
-        // Create loading text
         const loadingText = this.add.text(
             this.cameras.main.width / 2,
             this.cameras.main.height / 2,
             'Loading video...',
             {
+                fontFamily: 'Karantina',
                 fontSize: '32px',
                 color: '#ffffff',
                 align: 'center'
@@ -27,7 +25,6 @@ class CinematicScene extends Phaser.Scene {
         );
         loadingText.setOrigin(0.5);
 
-        // Load the video
         this.load.video('video', this.path, {
             type: 'video/mp4',
             mimeType: 'video/mp4'
@@ -35,17 +32,14 @@ class CinematicScene extends Phaser.Scene {
     }
 
     create() {
-        // Create video element
         const video = this.add.video(0, 0, 'video');
         
-        // Center the video
         video.setOrigin(0.5, 0.5);
         video.setPosition(
             this.cameras.main.width / 2,
             this.cameras.main.height / 2
         );
 
-        // Get video dimensions
         const videoWidth = video.width;
         const videoHeight = video.height;
         
@@ -58,19 +52,14 @@ class CinematicScene extends Phaser.Scene {
             }
         });
 
-        // Calculate scale to fit screen while maintaining aspect ratio
         const scale = Math.min(
-            (this.cameras.main.width * 0.8) / videoWidth,  // 80% of screen width
-            (this.cameras.main.height * 0.8) / videoHeight // 80% of screen height
+            (this.cameras.main.width * 0.8) / videoWidth,  
+            (this.cameras.main.height * 0.8) / videoHeight 
         );
 
-        console.log('Calculated scale:', scale);
-
-        // Scale the video
         video.setScale(scale);
         video.setVisible(true);
 
-        // Play the video
         video.play(false, 0, 1);
 
         video.on('complete', () => {

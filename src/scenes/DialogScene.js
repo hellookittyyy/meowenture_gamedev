@@ -71,7 +71,7 @@ class DialogScene extends Phaser.Scene {
             {
                 fontSize: '16px',
                 color: '#ffffff',
-                fontFamily: 'Glasstown',
+                fontFamily: 'Arial',
                 fontWeight: 'bold'
             }
         );
@@ -86,7 +86,7 @@ class DialogScene extends Phaser.Scene {
             {
                 fontSize: '18px',
                 color: '#ffffff',
-                fontFamily: 'Glasstown',
+                fontFamily: 'Arial',
                 wordWrap: { width: dialogFrame.displayWidth * 0.95 },
                 align: 'left',
                 lineSpacing: 4
@@ -121,7 +121,6 @@ class DialogScene extends Phaser.Scene {
     insertVariables(text) {
         const coinCount = this.registry.get('coin_count');
         const deathCount = this.registry.get('death_count');
-        console.log("СС",coinCount, deathCount);
         return text.replace('{coinCount}', coinCount).replace('{deathCount}', deathCount);
     }
 }

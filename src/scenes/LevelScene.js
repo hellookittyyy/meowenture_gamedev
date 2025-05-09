@@ -50,11 +50,8 @@ class LevelScene extends Phaser.Scene {
 
         this.createLevel();
         this.createBottomBorder();
-
         this.createPlayer();
-
         this.setupInterface();
-
         this.buildLevel();
     }
 
@@ -107,7 +104,6 @@ class LevelScene extends Phaser.Scene {
         this.obstacles = this.physics.add.staticGroup();
 
         for (let i = 0; i < this.level.blocks.length; i++) {
-            console.log(this.level.blocks[i]);
             this.buildBlock(this.level.blocks[i]);
         }
 
