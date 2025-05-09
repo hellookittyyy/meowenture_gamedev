@@ -8,7 +8,7 @@ class LevelScene extends Phaser.Scene {
     constructor() {
         super('LevelScene');
         this.player = null;
-        this.finishArea = null;
+        this.finishArea = null;        
     }
 
     init(levelId) {
@@ -55,63 +55,7 @@ class LevelScene extends Phaser.Scene {
 
         this.setupInterface();
 
-        const scale = 3;
-
-        const ground = this.physics.add.staticGroup();
-        ground.create(300, 800, 'platform3')
-            .setScale(scale)
-            .refreshBody();
-        ground.create(1150, 750, 'platform1')
-            .setScale(scale)
-            .refreshBody();
-        ground.create(1700, 450, 'platform4')
-            .setScale(scale)
-            .refreshBody();
-
-        const obstacles = this.physics.add.staticGroup();
-        obstacles.create(1140, 720, 'spike')
-            .setScale(0.1)
-            .refreshBody();
-        obstacles.create(1170, 720, 'spike')
-            .setScale(0.1)
-            .refreshBody();
-            
-        const platform1 = this.physics.add.image(600, 700, 'platform2').setScale(scale).setDirectControl().setImmovable();
-        this.tweens.add({
-            targets: platform1,
-            x: 800,
-            duration: 2000,
-            yoyo: true,
-            repeat: -1
-        });
-
-        const coin1 = this.physics.add.sprite(700, 600, 'coin').setScale(scale).setImmovable(true);
-        coin1.body.setAllowGravity(false);
-
-
-        const platform2 = this.physics.add.image(1400, 300, 'platform2').setScale(scale).setDirectControl().setImmovable();
-        this.tweens.add({
-            targets: platform2,
-            y: 800,
-            duration: 2000,
-            yoyo: true,
-            repeat: -1
-        });
-
-        
-
-
-        this.physics.add.collider(this.player, ground);
-        this.physics.add.collider(this.player, [ platform1, platform2 ]);
-        
-        this.physics.add.overlap(this.player, obstacles, this.handleDamage, null, this);
-
-        this.physics.add.overlap(this.player, coin1, () => {
-            let coinCount = this.registry.get('coin_count');
-            coinCount += 1;
-            this.registry.set('coin_count', coinCount);
-            coin1.destroy();
-        });
+        this.buildLevel();
     }
 
     update() {       
@@ -158,6 +102,52 @@ class LevelScene extends Phaser.Scene {
         }
     }
     
+    buildLevel() {
+        this.ground = this.physics.add.staticGroup();
+        this.obstacles = this.physics.add.staticGroup();
+
+        for (let i = 0; i < this.level.blocks.length; i++) {
+            console.log(this.level.blocks[i]);
+            this.buildBlock(this.level.blocks[i]);
+        }
+
+        this.physics.add.collider(this.player, this.ground);
+        this.physics.add.overlap(this.player, this.obstacles, this.handleDamage, null, this);
+    }
+    
+    buildBlock(block) {
+        switch (block.type) {
+            case 'ground':
+                this.ground.create(block.coords.x, block.coords.y, block.image).setScale(block.scale).refreshBody();
+                break;
+            case 'obstacle':
+                this.obstacles.create(block.coords.x, block.coords.y, block.image).setScale(block.scale).refreshBody();
+                break;
+            case 'coin':
+                const coin = this.physics.add.sprite(block.coords.x, block.coords.y, block.image).setScale(block.scale).refreshBody();
+                coin.body.setAllowGravity(false);
+                this.physics.add.overlap(this.player, coin, () => {
+                    let coinCount = this.registry.get('coin_count');
+                    coinCount += 1;
+                    this.registry.set('coin_count', coinCount);
+                    coin.destroy();
+                });
+                break;
+            case 'platform':
+                const platform = this.physics.add.image(block.coords.x, block.coords.y, block.image).setScale(block.scale).setDirectControl().setImmovable();
+                this.tweens.add({
+                    targets: platform,
+                    x: block.move.x == 0 ? block.coords.x : block.move.x,
+                    y: block.move.y == 0 ? block.coords.y : block.move.y,
+                    duration: block.move.duration,
+                    yoyo: block.move.yoyo,
+                    repeat: block.move.repeat
+                });
+                this.physics.add.collider(this.player, platform);
+                break;
+        }
+    }
+
     createLevel() {
         this.physics.world.setBounds(0, 0, this.level.width, LEVEL_HEIGHT);
         this.cameras.main.setBounds(0, 0, this.level.width, LEVEL_HEIGHT);
@@ -205,44 +195,14 @@ class LevelScene extends Phaser.Scene {
         this.player = this.physics.add.sprite(this.level.start.x, this.level.start.y - 50, 'character')
             .setScale(0.5)
             .setCollideWorldBounds(true);
-        this.anims.create({
-                key: 'move',
-                frames: this.anims.generateFrameNumbers('character', { start: 0, end: 5 }),
-                frameRate: 10,
-                repeat: -1
-            });
-    
-            this.anims.create({
-                key: 'idle',
-                frames: this.anims.generateFrameNumbers('character', { start: 4, end: 5 }),
-                frameRate: 5,
-                repeat: -1
-            });
-    
-            this.anims.create({
-                key: 'jump',
-                frames: this.anims.generateFrameNumbers('character', { start: 6, end: 7 }),
-                frameRate: 5,
-                repeat: 0
-            });
-    
-            this.anims.create({
-                key: 'falling',
-                frames: this.anims.generateFrameNumbers('character', { start: 8, end: 8 }),
-                frameRate: 5,
-                repeat: 0
-            });
-    
-            this.anims.create({
-                key: 'die',
-                frames: this.anims.generateFrameNumbers('character', { start: 9, end: 12 }),
-                frameRate: 5,
-                repeat: -1
-            })
-            
-            this.player.body.setSize(this.player.width * 0.7, this.player.height * 0.9);
-            this.player.body.setOffset(this.player.width * 0.15, this.player.height * 0.1);
-    
+
+        this.anims.create({key: 'move', frames: this.anims.generateFrameNumbers('character', { start: 0, end: 5 }), frameRate: 10, repeat: -1});
+        this.anims.create({key: 'idle', frames: this.anims.generateFrameNumbers('character', { start: 4, end: 5 }), frameRate: 5, repeat: -1});
+        this.anims.create({key: 'jump', frames: this.anims.generateFrameNumbers('character', { start: 6, end: 7 }), frameRate: 5, repeat: 0});
+        this.anims.create({key: 'falling', frames: this.anims.generateFrameNumbers('character', { start: 8, end: 8 }), frameRate: 5, repeat: 0});
+        this.anims.create({key: 'die', frames: this.anims.generateFrameNumbers('character', { start: 9, end: 12 }), frameRate: 5, repeat: -1});
+        this.player.body.setSize(this.player.width * 0.7, this.player.height * 0.9);
+        this.player.body.setOffset(this.player.width * 0.15, this.player.height * 0.1);
         this.player.setDepth(4);
     }
     
@@ -290,7 +250,7 @@ class LevelScene extends Phaser.Scene {
             }
         }else{
             if (this.isInvincible) return;
-            this.drawInterface();
+            this.setupInterface();
             this.player.setPosition(200, 700);
         }
     }
