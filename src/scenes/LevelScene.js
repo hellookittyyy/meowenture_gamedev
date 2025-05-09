@@ -7,6 +7,8 @@ const LEVEL_HEIGHT = 900;
 class LevelScene extends Phaser.Scene {
     constructor() {
         super('LevelScene');
+        this.player = null;
+        this.finishArea = null;
     }
 
     init(levelId) {
@@ -16,6 +18,7 @@ class LevelScene extends Phaser.Scene {
         this.hp = MAX_HP;
         this.dead = false;
         this.isInvincible = false;
+
         if (!this.registry.has('death_count')) {
             this.registry.set('death_count', 0);
         }
@@ -46,20 +49,11 @@ class LevelScene extends Phaser.Scene {
         }
 
         this.createLevel();
-        this.drawInterface();
+        this.createBottomBorder();
 
-        const bottom = this.physics.add.staticGroup();
+        this.createPlayer();
 
-        let x = 0;
-        let y = LEVEL_HEIGHT;
-        do
-        {
-            bottom.create(x, y, 'spike')
-                .setScale(0.25)
-                .refreshBody();
-            x += 30;
-        }
-        while (x < 3200);
+        this.setupInterface();
 
         const scale = 3;
 
@@ -104,97 +98,19 @@ class LevelScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.player = this.physics.add.sprite(200, 700, 'character')
-            .setScale(0.5)
-            .setCollideWorldBounds(true);
-        this.player.setDepth(4);
-
-        this.anims.create({
-            key: 'move',
-            frames: this.anims.generateFrameNumbers('character', { start: 0, end: 5 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('character', { start: 4, end: 5 }),
-            frameRate: 5,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'jump',
-            frames: this.anims.generateFrameNumbers('character', { start: 6, end: 7 }),
-            frameRate: 5,
-            repeat: 0
-        });
-
-        this.anims.create({
-            key: 'falling',
-            frames: this.anims.generateFrameNumbers('character', { start: 8, end: 8 }),
-            frameRate: 5,
-            repeat: 0
-        });
-
-        this.anims.create({
-            key: 'die',
-            frames: this.anims.generateFrameNumbers('character', { start: 9, end: 12 }),
-            frameRate: 5,
-            repeat: -1
-        })
         
-        this.player.body.setSize(this.player.width * 0.7, this.player.height * 0.9);
-        this.player.body.setOffset(this.player.width * 0.15, this.player.height * 0.1);
 
-        this.cameras.main.startFollow(this.player, false, 0.2, 0.2);
-        this.cursors = this.input.keyboard.createCursorKeys();
 
         this.physics.add.collider(this.player, ground);
         this.physics.add.collider(this.player, [ platform1, platform2 ]);
         
         this.physics.add.overlap(this.player, obstacles, this.handleDamage, null, this);
-        this.physics.add.overlap(this.player, this.finishArea, () => {
-            if (!this.dead) {
-                this.scene.start('DialogScene', this.level.nextDialogId);
-            }
-        }, null, this);
 
         this.physics.add.overlap(this.player, coin1, () => {
             let coinCount = this.registry.get('coin_count');
             coinCount += 1;
             this.registry.set('coin_count', coinCount);
             coin1.destroy();
-        });
-    }
-
-    createLevel() {
-        this.physics.world.setBounds(0, 0, this.level.width, LEVEL_HEIGHT);
-        this.cameras.main.setBounds(0, 0, this.level.width, LEVEL_HEIGHT);
-        this.add.image(this.level.width / 2, LEVEL_HEIGHT / 2, this.level.background).setScale(0.5);
-    }
-
-    handleDamage() {
-        if (this.isInvincible || this.dead) return;
-        
-        this.isInvincible = true;
-        this.hp -= 1;
-        this.checkHP();
-        
-        const flashInterval = 200; 
-        const flashTween = this.tweens.add({
-            targets: this.player,
-            alpha: 0.3,
-            duration: flashInterval,
-            ease: 'Linear',
-            yoyo: true,
-            repeat: 9
-        });
-        
-        this.time.delayedCall(2000, () => {
-            this.isInvincible = false;
-            flashTween.stop();
-            this.player.alpha = 1;
         });
     }
 
@@ -242,7 +158,95 @@ class LevelScene extends Phaser.Scene {
         }
     }
     
-    drawInterface() {
+    createLevel() {
+        this.physics.world.setBounds(0, 0, this.level.width, LEVEL_HEIGHT);
+        this.cameras.main.setBounds(0, 0, this.level.width, LEVEL_HEIGHT);
+        this.add.image(this.level.width / 2, LEVEL_HEIGHT / 2, this.level.background).setScale(0.5);
+    }
+
+    createBottomBorder() {
+        const bottomBorder = this.physics.add.staticGroup();
+        let x = 0;
+        do
+        {
+            bottomBorder.create(x, LEVEL_HEIGHT, 'spike')
+                .setScale(0.25)
+                .refreshBody();
+            x += 30;
+        }
+        while (x < this.level.width);
+    }
+
+    handleDamage() {
+        if (this.isInvincible || this.dead) return;
+        
+        this.isInvincible = true;
+        this.hp -= 1;
+        this.checkHP();
+        
+        const flashInterval = 200; 
+        const flashTween = this.tweens.add({
+            targets: this.player,
+            alpha: 0.3,
+            duration: flashInterval,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: 9
+        });
+        
+        this.time.delayedCall(2000, () => {
+            this.isInvincible = false;
+            flashTween.stop();
+            this.player.alpha = 1;
+        });
+    }
+
+    createPlayer() {
+        this.player = this.physics.add.sprite(this.level.start.x, this.level.start.y - 50, 'character')
+            .setScale(0.5)
+            .setCollideWorldBounds(true);
+        this.anims.create({
+                key: 'move',
+                frames: this.anims.generateFrameNumbers('character', { start: 0, end: 5 }),
+                frameRate: 10,
+                repeat: -1
+            });
+    
+            this.anims.create({
+                key: 'idle',
+                frames: this.anims.generateFrameNumbers('character', { start: 4, end: 5 }),
+                frameRate: 5,
+                repeat: -1
+            });
+    
+            this.anims.create({
+                key: 'jump',
+                frames: this.anims.generateFrameNumbers('character', { start: 6, end: 7 }),
+                frameRate: 5,
+                repeat: 0
+            });
+    
+            this.anims.create({
+                key: 'falling',
+                frames: this.anims.generateFrameNumbers('character', { start: 8, end: 8 }),
+                frameRate: 5,
+                repeat: 0
+            });
+    
+            this.anims.create({
+                key: 'die',
+                frames: this.anims.generateFrameNumbers('character', { start: 9, end: 12 }),
+                frameRate: 5,
+                repeat: -1
+            })
+            
+            this.player.body.setSize(this.player.width * 0.7, this.player.height * 0.9);
+            this.player.body.setOffset(this.player.width * 0.15, this.player.height * 0.1);
+    
+        this.player.setDepth(4);
+    }
+    
+    setupInterface() {
         const interface_scale = 2;
         
         for (let i = 0; i < this.hp; i++) {
@@ -258,7 +262,17 @@ class LevelScene extends Phaser.Scene {
         this.finishArea = this.physics.add.sprite(this.level.finish.x, this.level.finish.y, 'finish')
             .setScale(interface_scale/4)
             .setImmovable(true);
+
         this.finishArea.body.setAllowGravity(false);
+
+        this.physics.add.overlap(this.player, this.finishArea, () => {
+            if (!this.dead) {
+                this.scene.start('DialogScene', this.level.nextDialogId);
+            }
+        }, null, this);
+
+        this.cameras.main.startFollow(this.player, false, 0.2, 0.2);
+        this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     checkHP() {
