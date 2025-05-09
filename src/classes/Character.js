@@ -15,8 +15,6 @@ class Character {
     }
 
     loadCharacterInfo(id) {
-        // temp load from file
-        console.log('Loading character info:', id);
         return fetch(`../assets/characters/${id}.json`).then(response => response.json());
     }
 }

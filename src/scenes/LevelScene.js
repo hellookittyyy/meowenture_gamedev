@@ -2,36 +2,56 @@ import Phaser from 'phaser';
 import Level from '../classes/Level.js';
 
 const MAX_HP = 3;
+const LEVEL_HEIGHT = 900;
 
 class LevelScene extends Phaser.Scene {
     constructor() {
         super('LevelScene');
-        this.isInvincible = false;
     }
 
     init(levelId) {
+        this.levelId = levelId;
+        this.assetsLoaded = false;
+
         this.hp = MAX_HP;
         this.dead = false;
         this.isInvincible = false;
         if (!this.registry.has('death_count')) {
             this.registry.set('death_count', 0);
         }
+        if (!this.registry.has('coin_count')) {
+            this.registry.set('coin_count', 0);
+        }
 
-        this.level = new Level(levelId);
         this.cameras.main.fadeIn(500);
     }
 
-    create() {
-        this.physics.world.setBounds(0, 0, 3200, 900);
-        this.cameras.main.setBounds(0, 0, 3200, 900);
-        this.add.image(1600, 450, 'level_background').setScale(0.5);
+    preload() {
+        this.level = new Level(this.levelId);
 
+        this.level.ready.then(() => {
+            this.load.once('complete', () => {
+                this.assetsLoaded = true;
+                this.events.emit('create');
+            });
+            
+            this.load.start();
+        });
+    }
+
+    create() {
+        if (!this.assetsLoaded) {
+            this.events.once('create', this.create, this);
+            return;
+        }
+
+        this.createLevel();
         this.drawInterface();
 
         const bottom = this.physics.add.staticGroup();
 
         let x = 0;
-        let y = 900;
+        let y = LEVEL_HEIGHT;
         do
         {
             bottom.create(x, y, 'spike')
@@ -62,9 +82,6 @@ class LevelScene extends Phaser.Scene {
             .setScale(0.1)
             .refreshBody();
             
-
-        
-        
         const platform1 = this.physics.add.image(600, 700, 'platform2').setScale(scale).setDirectControl().setImmovable();
         this.tweens.add({
             targets: platform1,
@@ -145,14 +162,16 @@ class LevelScene extends Phaser.Scene {
 
         this.physics.add.overlap(this.player, coin1, () => {
             let coinCount = this.registry.get('coin_count');
-            if (coinCount == null) {
-                coinCount = 0;
-            }
             coinCount += 1;
             this.registry.set('coin_count', coinCount);
-            console.log("COIN COUNT: ",  this.registry.get('coin_count'));
             coin1.destroy();
         });
+    }
+
+    createLevel() {
+        this.physics.world.setBounds(0, 0, this.level.width, LEVEL_HEIGHT);
+        this.cameras.main.setBounds(0, 0, this.level.width, LEVEL_HEIGHT);
+        this.add.image(this.level.width / 2, LEVEL_HEIGHT / 2, this.level.background).setScale(0.5);
     }
 
     handleDamage() {
@@ -179,7 +198,12 @@ class LevelScene extends Phaser.Scene {
         });
     }
 
-    update() {        
+    update() {       
+        if (!this.assetsLoaded) {
+            this.events.once('create', this.update, this);
+            return;
+        }
+
         if (this.dead) {
             return;
         }

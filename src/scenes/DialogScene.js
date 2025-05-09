@@ -113,7 +113,7 @@ class DialogScene extends Phaser.Scene {
             else if (this.dialog.nextDialogId) {
                 this.scene.start('DialogScene', this.dialog.nextDialogId);
             } else if (this.dialog.nextLevelId) {
-                this.scene.start('LevelScene', { levelId: this.dialog.nextLevelId });
+                this.scene.start('LevelScene', this.dialog.nextLevelId);
             }
         });
     }
