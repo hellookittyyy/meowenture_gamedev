@@ -1,0 +1,10 @@
+{
+    "type": "obstacle",
+    "coords": {
+        "x": 1170,
+        "y": 720
+    },
+    "scale": 0.1,
+    "image": "spike",
+    "move": null
+}

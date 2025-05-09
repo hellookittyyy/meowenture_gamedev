@@ -1,0 +1,10 @@
+{
+    "type": "platform",
+    "coords": {
+        "x": 600,
+        "y": 700
+    },
+    "scale": 3,
+    "image": "platform2",
+    "move": { "x": 800, "y": 0, "duration": 2000, "yoyo": true, "repeat": -1 }
+}

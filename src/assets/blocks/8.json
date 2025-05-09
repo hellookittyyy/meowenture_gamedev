@@ -1,0 +1,10 @@
+{
+    "type": "coin",
+    "coords": {
+        "x": 700,
+        "y": 600
+    },
+    "scale": 3,
+    "image": "coin",
+    "move": null
+}

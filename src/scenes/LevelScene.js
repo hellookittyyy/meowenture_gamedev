@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Level from '../classes/Level.js';
 
 const MAX_HP = 3;
 
@@ -8,7 +9,7 @@ class LevelScene extends Phaser.Scene {
         this.isInvincible = false;
     }
 
-    init() {
+    init(levelId) {
         this.hp = MAX_HP;
         this.dead = false;
         this.isInvincible = false;
@@ -16,39 +17,8 @@ class LevelScene extends Phaser.Scene {
             this.registry.set('death_count', 0);
         }
 
+        this.level = new Level(levelId);
         this.cameras.main.fadeIn(500);
-
-        this.level = {
-            start: {
-                x: 200,
-                y: 720
-            },
-            finish: {
-                x: 1700,
-                y: 370
-            },
-            nextDialogId: 20,
-            levelNum: 1
-        }
-    }
-    
-    drawInterface() {
-        const interface_scale = 2;
-        
-        for (let i = 0; i < this.hp; i++) {
-            this.add.image(50 + i * 50, 50, 'heart').setScale(interface_scale).setScrollFactor(0);
-        }
-
-        for (let i = this.hp; i < MAX_HP; i++) {
-            this.add.image(50 + i * 50, 50, 'heart-empty').setScale(interface_scale).setScrollFactor(0);
-        }
-
-        this.add.image(this.level.start.x, this.level.start.y, 'start').setScale(interface_scale/4);
-        
-        this.finishArea = this.physics.add.sprite(this.level.finish.x, this.level.finish.y, 'finish')
-            .setScale(interface_scale/4)
-            .setImmovable(true);
-        this.finishArea.body.setAllowGravity(false);
     }
 
     create() {
@@ -84,11 +54,11 @@ class LevelScene extends Phaser.Scene {
             .setScale(scale)
             .refreshBody();
 
-        const obsticles = this.physics.add.staticGroup();
-        obsticles.create(1140, 720, 'spike')
+        const obstacles = this.physics.add.staticGroup();
+        obstacles.create(1140, 720, 'spike')
             .setScale(0.1)
             .refreshBody();
-        obsticles.create(1170, 720, 'spike')
+        obstacles.create(1170, 720, 'spike')
             .setScale(0.1)
             .refreshBody();
             
@@ -166,7 +136,7 @@ class LevelScene extends Phaser.Scene {
         this.physics.add.collider(this.player, ground);
         this.physics.add.collider(this.player, [ platform1, platform2 ]);
         
-        this.physics.add.overlap(this.player, obsticles, this.handleDamage, null, this);
+        this.physics.add.overlap(this.player, obstacles, this.handleDamage, null, this);
         this.physics.add.overlap(this.player, this.finishArea, () => {
             if (!this.dead) {
                 this.scene.start('DialogScene', this.level.nextDialogId);
@@ -246,6 +216,25 @@ class LevelScene extends Phaser.Scene {
             this.hp -= 1;
             this.checkHP();
         }
+    }
+    
+    drawInterface() {
+        const interface_scale = 2;
+        
+        for (let i = 0; i < this.hp; i++) {
+            this.add.image(50 + i * 50, 50, 'heart').setScale(interface_scale).setScrollFactor(0);
+        }
+
+        for (let i = this.hp; i < MAX_HP; i++) {
+            this.add.image(50 + i * 50, 50, 'heart-empty').setScale(interface_scale).setScrollFactor(0);
+        }
+
+        this.add.image(this.level.start.x, this.level.start.y, 'start').setScale(interface_scale/4);
+        
+        this.finishArea = this.physics.add.sprite(this.level.finish.x, this.level.finish.y, 'finish')
+            .setScale(interface_scale/4)
+            .setImmovable(true);
+        this.finishArea.body.setAllowGravity(false);
     }
 
     checkHP() {

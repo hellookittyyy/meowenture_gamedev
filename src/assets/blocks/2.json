@@ -1,0 +1,10 @@
+{
+    "type": "ground",
+    "coords": {
+        "x": 1150,
+        "y": 750
+    },
+    "scale": 3,
+    "image": "platform1",
+    "move": null
+}
