@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Api from '../api/Api';
 
 class MainMenuScene extends Phaser.Scene {
     constructor() {
@@ -13,7 +14,8 @@ class MainMenuScene extends Phaser.Scene {
                 exit: 'Exit',
                 newGame: 'New Game',
                 continue: 'Continue',
-                skins: 'Skins'
+                skins: 'Skins',
+                welcome: 'Welcome, '
             },
             'Ukrainian': {
                 title: 'MEOWENTURE',
@@ -22,7 +24,8 @@ class MainMenuScene extends Phaser.Scene {
                 exit: 'Вихід',
                 newGame: 'Нова гра',
                 continue: 'Продовжити',
-                skins: 'Скіни'
+                skins: 'Скіни',
+                welcome: 'Ласкаво просимо, '
             }
         };
     }
@@ -42,7 +45,7 @@ class MainMenuScene extends Phaser.Scene {
         this.load.audio('bgMusic', 'assets/audio/Elysium.mp3');
     }
 
-    create() {
+    async create() {
         this.input.setDefaultCursor('auto');
 
         const width = this.cameras.main.width;
@@ -179,6 +182,31 @@ class MainMenuScene extends Phaser.Scene {
         }
 
         this.sound.bgMusic = this.bgMusic;
+
+        // Get user profile from API
+        try {
+            const api = new Api(this.game);
+            const userData = await api.getUserProfile();
+            
+            // Add welcome message with username
+            const welcomeText = this.add.text(
+                width * 0.02,  // 2% from left
+                height * 0.02, // 2% from top
+                `${this.translations[this.language].welcome}${userData.username}`,
+                {
+                    fontFamily: 'Karantina',
+                    fontSize: '24px',
+                    color: '#0F3258',
+                    fontWeight: '700',
+                    resolution: 2,
+                    stroke: '#ACE2FF',
+                    strokeThickness: 4
+                }
+            );
+            welcomeText.setOrigin(0, 0);
+        } catch (error) {
+            console.error('Failed to fetch user profile:', error);
+        }
     }
 }
 
